@@ -3,6 +3,7 @@ from __future__ import with_statement
 from functools import wraps
 import sys
 
+from fabric import system_log
 from fabric import state
 from fabric.utils import abort, warn, error
 from fabric.network import to_dict, normalize_to_string
@@ -144,7 +145,7 @@ def _execute(task, host, my_env, args, kwargs, jobs, queue, multiprocessing):
     """
     # Log to stdout
     if state.output.running and not hasattr(task, 'return_value'):
-        print("[%s] Executing task '%s'" % (host, my_env['command']))
+        system_log.info("[%s] Executing task '%s'" % (host, my_env['command']))
     # Create per-run env with connection settings
     local_env = to_dict(host)
     local_env.update(my_env)

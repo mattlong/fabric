@@ -15,6 +15,7 @@ import time
 from glob import glob
 from contextlib import closing
 
+from fabric import stdout_log, stderr_log, system_log
 from fabric.context_managers import settings, char_buffered, hide
 from fabric.io import output_loop, input_loop
 from fabric.network import needs_host, ssh, ssh_config
@@ -757,7 +758,12 @@ def _execute(channel, command, pty=True, combine_stderr=None,
         if output.running \
             and (output.stdout and stdout and not stdout.endswith("\n")) \
             or (output.stderr and stderr and not stderr.endswith("\n")):
-            print("")
+            if not env.use_logging:
+                print("")
+
+        if env.use_logging:
+            stdout_log.info(stdout)
+            stderr_log.error(stderr)
 
         return stdout, stderr, status
 
@@ -811,9 +817,9 @@ def _run_command(command, shell=True, pty=True, combine_stderr=True,
     # Execute info line
     which = 'sudo' if sudo else 'run'
     if output.debug:
-        print("[%s] %s: %s" % (env.host_string, which, wrapped_command))
+        system_log.info("[%s] %s: %s" % (env.host_string, which, wrapped_command))
     elif output.running:
-        print("[%s] %s: %s" % (env.host_string, which, given_command))
+        system_log.info("[%s] %s: %s" % (env.host_string, which, given_command))
 
     # Actual execution, stdin/stdout/stderr handling, and termination
     stdout, stderr, status = _execute(default_channel(), wrapped_command, pty,

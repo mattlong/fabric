@@ -3,6 +3,7 @@ from __future__ import with_statement
 import sys
 import time
 from select import select
+import cStringIO
 
 from fabric.context_managers import settings, char_buffered
 from fabric.state import env, output, win32
@@ -43,10 +44,16 @@ def output_loop(chan, which, capture):
     func = getattr(chan, which)
     if which == 'recv':
         prefix = "out"
-        pipe = sys.stdout
+        if env.use_logging:
+            pipe = cStringIO.StringIO()
+        else:
+            pipe = sys.stdout
     else:
         prefix = "err"
-        pipe = sys.stderr
+        if env.use_logging:
+            pipe = cStringIO.StringIO() if env.use_logging else sys.stderr
+        else:
+            pipe = sys.stderr
     _prefix = "[%s] %s: " % (env.host_string, prefix)
     printing = getattr(output, 'stdout' if (which == 'recv') else 'stderr')
     # Initialize loop variables
