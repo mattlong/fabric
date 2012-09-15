@@ -28,13 +28,13 @@ For more information, please see the Fabric website or execute ``fab --help``.
 """ % (v, readme)
 
 setup(
-    name='Fabric',
+    name='fabric-logging',
     version=get_version('short'),
-    description='Fabric is a simple, Pythonic tool for remote execution and deployment.',
+    description='Adds option to redirect all stdout/stderr through standard Python logging. Very much a work in progress',
     long_description=long_description,
-    author='Jeff Forcier',
-    author_email='jeff@bitprophet.org',
-    url='http://fabfile.org',
+    author='Matt Long',
+    author_email='matt@mattlong.org',
+    url="https://github.com/mattlong/fabric",
     packages=find_packages(),
     test_suite='nose.collector',
     tests_require=['nose', 'fudge<1.0'],
