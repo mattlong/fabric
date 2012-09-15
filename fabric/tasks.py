@@ -3,7 +3,7 @@ from __future__ import with_statement
 from functools import wraps
 import sys
 
-from fabric import system_log
+from fabric.log import system_log
 from fabric import state
 from fabric.utils import abort, warn, error
 from fabric.network import to_dict, normalize_to_string

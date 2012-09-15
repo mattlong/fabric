@@ -15,7 +15,7 @@ import time
 from glob import glob
 from contextlib import closing
 
-from fabric import stdout_log, stderr_log, system_log
+from fabric.log import stdout_log, stderr_log, system_log
 from fabric.context_managers import settings, char_buffered, hide
 from fabric.io import output_loop, input_loop
 from fabric.network import needs_host, ssh, ssh_config
